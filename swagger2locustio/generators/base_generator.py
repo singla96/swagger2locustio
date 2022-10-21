@@ -124,9 +124,7 @@ class BaseGenerator:
                     constants_templates.CONSTANTS_FILE.render(constants=class_constants)
                 )
         (self.results_path / "locustfile.py").write_text(
-            l_templates.MAIN_LOCUSTFILE.render(
-                host=swagger_data["schemes"][0] + "://" + swagger_data["host"], app_name=self.app_name,
-            )
+            l_templates.MAIN_LOCUSTFILE.render(host=swagger_data["host"], app_name=self.app_name,)
         )
         (self.results_path / self.current_app_path / "generated_taskset.py").write_text(
             l_templates.GENERATED_TASKSET_FILE.render(

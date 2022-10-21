@@ -14,15 +14,16 @@ class SwaggerBaseParser(ABC):
             "host": self.parse_host_data(file_content),
             "security": self.parse_security_data(file_content),
             "paths": self.parse_paths_data(file_content, mask),
-            "schemes": file_content["schemes"],
         }
         return data
 
     @staticmethod
     def parse_host_data(file_content: dict) -> str:
         """Method: parse host data"""
-
-        return file_content.get("host", "")
+        servers = file_content.get("servers", [])
+        if servers[0]:
+            return servers[0]["url"]
+        return ""
 
     @staticmethod
     def parse_security_data(file_content: dict) -> dict:
