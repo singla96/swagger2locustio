@@ -13,7 +13,7 @@ API_PREFIX = ""
 CONSTANTS_FILE = Template(
     """from apps.helper import Helper
 
-{% for const in constants %}# value type -> {{ const.value_type }}
+{% for const in constants %}# value type -> {{ const.type }}
 {{ const.name }} = [{{ const.val }}]
 {% endfor %}
 """

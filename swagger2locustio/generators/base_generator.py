@@ -24,6 +24,8 @@ class Constant:
     name: str
     val: Any
     value_type: str
+    type: str
+    format: str
 
 
 @dataclass
@@ -217,11 +219,24 @@ class BaseGenerator:
             const_name = param_name.upper() + f"__{method_num}"
             param_val = param.get("default")
             param_val_type = param.get("type", "")
+            param_schema = param.get("schema", {})
             const_val = repr(param_val)
             if param_val is None:
                 const_val = helpers_templates.HELPER_MAPPING.get(param_val_type, "")
             param_val = helpers_templates.HELPER_MAPPING["choice"].format(values=const_name)
-            constants.append(Constant(name=const_name, val=const_val, value_type=param_val_type))
+            if "format" not in param_schema:
+                param_schema["format"] = ""
+            if "type" not in param_schema:
+                param_schema["type"] = ""
+            constants.append(
+                Constant(
+                    name=const_name,
+                    val=const_val,
+                    value_type=param_val_type,
+                    type=param_schema["type"],
+                    format=param_schema["format"],
+                )
+            )
             if param_type == "path":
                 params.append(l_templates.PATH_PARAM_PAIR.render(key=param_name, val=param_val))
             else:
